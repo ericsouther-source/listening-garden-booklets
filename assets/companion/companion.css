@@ -1,0 +1,18 @@
+.garden-companion{flex:0 0 205px;width:205px;align-self:center;text-align:center;color:var(--green)}
+.garden-companion[hidden],.garden-companion [hidden]{display:none}
+.companion-flower{display:block;width:100%;padding:0;border:0;background:transparent;color:inherit;cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+.companion-flower svg{display:block;width:165px;max-width:100%;height:auto;margin:auto;overflow:visible}
+.companion-flower:focus-visible,.companion-controls button:focus-visible{outline:3px solid var(--violet);outline-offset:5px;border-radius:12px}
+.companion-roots{stroke:#725187;stroke-width:1.35}
+.companion-root-fine{stroke-width:.7;opacity:.7}
+.companion-caption{min-height:112px;padding-top:8px;font:11px/1.6 var(--mono);letter-spacing:.01em}
+.companion-controls{display:flex;justify-content:center;gap:6px;margin-top:3px}
+.companion-controls button{min-height:44px;padding:8px;font:10px/1.5 var(--mono);white-space:nowrap;color:var(--violet);background:transparent;border:1px solid transparent;border-radius:3px;cursor:pointer;touch-action:manipulation;text-decoration:underline;text-underline-offset:3px}
+.companion-controls button:hover{border-color:var(--rule)}
+.companion-status{display:block;margin-top:5px;color:var(--violet);font-size:10px;line-height:1.5}
+.companion-head,.companion-petals,.companion-eyes,.companion-shoot{will-change:transform}
+@media(max-width:1100px) and (min-width:851px){.garden-companion{flex-basis:175px;width:175px}.intro{gap:26px}}
+@media(max-width:850px){.intro{flex-wrap:wrap;justify-content:center;gap:22px}.intro-copy{width:100%}.garden-companion{flex-basis:190px;width:190px}.companion-flower svg{width:145px}}
+@media(max-width:640px){.intro{gap:14px}.companion-flower svg{width:132px}}
+@media(prefers-reduced-motion:reduce){.companion-head,.companion-petals,.companion-eyes,.companion-shoot{will-change:auto}}
+@media print{.garden-companion{display:none}}
