@@ -3,7 +3,13 @@
 if(location.protocol==='file:') document.querySelectorAll('.download-link').forEach(link=>link.remove());
 const players=[...document.querySelectorAll('audio')], bar=document.querySelector('.now-playing'), title=document.getElementById('now-title'), toggle=document.getElementById('now-toggle'), returnButton=document.getElementById('now-return');
 let current=null;
-function update(){if(!current)return; title.textContent=current.dataset.title||'Listening excerpt';toggle.textContent=current.paused?'Play':'Pause';bar.hidden=current.ended;}
+function reservePlayerSpace(){
+ const clearance=bar.hidden?'0px':`calc(${Math.ceil(bar.getBoundingClientRect().height)+16}px + var(--now-playing-offset))`;
+ document.documentElement.style.setProperty('--now-playing-clearance',clearance);
+}
+if('ResizeObserver' in window)new ResizeObserver(reservePlayerSpace).observe(bar);
+window.addEventListener('resize',reservePlayerSpace);
+function update(){if(!current)return; title.textContent=current.dataset.title||'Listening excerpt';toggle.textContent=current.paused?'Play':'Pause';bar.hidden=current.ended;reservePlayerSpace();}
 players.forEach(p=>{
  p.addEventListener('play',()=>{players.forEach(other=>{if(other!==p)other.pause();});current=p;bar.hidden=false;update();});
  p.addEventListener('pause',update);p.addEventListener('ended',update);
