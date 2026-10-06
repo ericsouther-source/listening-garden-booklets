@@ -114,32 +114,16 @@
         <h1 id="page-title">Booklets &amp;<span>listening companions</span></h1>
         <p>Step inside the music. Follow a sound, trace a connection, and find another way to listen.</p>
       </div>
-      <!-- A small transplant. Its roots remember the sounds that grew it. -->
+      <!-- A small transplant. The grass keeps time with whatever grows here. -->
       <div class="garden-companion" id="garden-companion" hidden>
         <button class="companion-flower" type="button" aria-label="Play a random garden sound" aria-describedby="companion-hint">
-          <svg viewBox="0 0 220 400" fill="none" aria-hidden="true">
+          <svg viewBox="0 0 220 350" fill="none" aria-hidden="true">
             <defs>
               <pattern id="companion-pink-ink" width="7" height="8" patternUnits="userSpaceOnUse">
                 <path fill="#f32b8b" d="M0 0h7v8H0z"/>
                 <g fill="#faf8f0" opacity=".42"><circle cx="1" cy="2" r=".48"/><circle cx="5" cy="6" r=".65"/><path d="m3 4 .5-.8.3 1.2Z"/></g>
               </pattern>
-              <pattern id="companion-soil-ink" width="13" height="15" patternUnits="userSpaceOnUse">
-                <path fill="#54218e" d="M0 0h13v15H0z"/>
-                <g fill="#faf8f0" opacity=".54"><circle cx="2" cy="3" r=".7"/><circle cx="10" cy="11" r=".5"/><path d="m5 8 1-.5.4 1.6-.9-.2Zm5-6 1.6.3-.4.8Z"/></g>
-                <g fill="#f32b8b" opacity=".55"><circle cx="7" cy="13" r=".8"/><circle cx="12" cy="6" r=".6"/></g>
-              </pattern>
-              <path id="companion-soil-shape" d="M14 317 28 314 37 317 53 314 65 317 84 313 101 316 111 314 132 317 149 314 164 317 181 314 204 317 206 334 203 352 206 370 203 392 188 394 175 391 156 394 140 392 123 395 106 392 88 395 74 392 58 395 42 392 26 394 14 391 16 373 13 355 16 336Z"/>
-              <clipPath id="companion-soil-clip"><use href="#companion-soil-shape"/></clipPath>
             </defs>
-            <g class="companion-ground">
-              <use href="#companion-soil-shape" fill="#f32b8b" opacity=".32" transform="translate(2 -1)"/>
-              <use href="#companion-soil-shape" fill="url(#companion-soil-ink)"/>
-              <g class="companion-roots" clip-path="url(#companion-soil-clip)" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M110 313C111 334 92 338 90 356S75 382 58 395M110 315C104 334 116 349 111 367S115 387 115 400M111 315C118 335 139 341 145 359S165 381 180 395M108 321C96 336 70 335 62 350S43 360 27 376M115 326C129 336 150 330 161 344S181 352 195 365"/>
-                <path d="M93 346C80 344 81 355 67 362M88 364C97 369 93 382 97 391M77 381C69 376 63 382 54 382M109 335C102 343 104 351 98 356M112 356C124 359 130 371 127 384M112 377C105 379 100 389 96 400M134 347C140 337 145 337 153 338M148 366C155 358 165 367 172 365M163 384C158 389 166 395 166 401M64 347C58 336 48 347 40 340M43 364C43 354 33 356 30 351M169 349C179 337 188 347 194 342M95 332C88 323 79 331 73 327"/>
-                <path class="companion-root-fine" d="M65 391q-9-7-15-1M95 378q11-2 12 7M78 350q-9-5-11-2M128 373q11 0 14 8M147 360q-13-3-13 4M181 355q8 6 6 15M105 389q-11 0-15 6M33 371q-9-1-10 8M81 371q-11-9-17-5M56 355q-6 4-15 2"/>
-              </g>
-            </g>
             <g class="companion-shoot">
               <path class="companion-stem" d="M110 315C106 250 125 160 121 79" stroke="#68bc78" stroke-width="5" stroke-linecap="round"/>
               <g class="companion-leaves" fill="#78c682">
@@ -166,6 +150,7 @@
                 <g class="companion-blush" fill="#db7690" opacity="0"><ellipse cx="-11" cy="5" rx="3" ry="1.5"/><ellipse cx="11" cy="5" rx="3" ry="1.5"/></g>
               </g>
             </g>
+            <g class="companion-grass"/>
             <g class="companion-seeds" fill="#f32b8b" opacity=".75">
               <circle cx="42" cy="108" r="2"/><circle cx="183" cy="72" r="1.7"/><circle cx="167" cy="270" r="2.4"/><circle cx="40" cy="272" r="1.7"/>
               <circle cx="68" cy="180" r="1.6"/><circle cx="163" cy="150" r="2.2"/><circle cx="65" cy="44" r="1.4"/><circle cx="178" cy="214" r="1.8"/>

@@ -22,6 +22,22 @@
     dot, offset: index / seeds.children.length, radius: +dot.getAttribute('r'),
     x: +dot.getAttribute('cx'), y: +dot.getAttribute('cy')
   }));
+  const grass = [
+    [22,326,17,-7,1.5],[34,323,29,4,2],[42,328,21,-9,1.8],
+    [52,322,41,-11,2.5],[60,330,25,9,2],[69,324,34,-4,2.5],
+    [77,320,48,9,2.7],[84,327,29,-12,2],[91,322,39,3,2.8],
+    [99,325,24,12,2.2],[106,318,44,-7,2.5],[113,320,31,8,2.8],
+    [120,326,47,13,2.6],[127,320,34,-4,2.3],[136,327,27,10,2],
+    [143,323,45,-6,2.7],[151,329,22,9,2],[161,322,37,14,2.5],
+    [170,326,26,-4,1.8],[179,321,32,10,2],[191,327,20,6,1.7],
+    [201,324,13,5,1.3]
+  ].map(([x,y,height,lean,width], index) => {
+    const blade = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+    blade.setAttribute('fill', ['#247345','#68bc78','#86ba81'][index % 3]);
+    blade.setAttribute('opacity', index < 3 || index > 18 ? '.6' : '.9');
+    root.querySelector('.companion-grass').appendChild(blade);
+    return {blade,x,y,height,lean,width,index};
+  });
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
   const data = window.gardenCompanionSounds;
   delete window.gardenCompanionSounds;
@@ -79,9 +95,19 @@
       dot.setAttribute('cx', x); dot.setAttribute('cy', y); dot.setAttribute('r', radius); dot.removeAttribute('opacity');
     });
   }
+  function bendGrass(energy, still = false) {
+    grass.forEach(({blade,x,y,height,lean,width,index}) => {
+      const breeze = still ? 0 : (Math.sin(phase * .9 - x / 65) * 5
+        + Math.sin(phase * 1.65 + index * .7) * 2) * (height / 35) * (1 + energy * .7);
+      const tip = x + lean + breeze;
+      const lower = x + lean * .15 + breeze * .2, upper = tip - lean * .2 - breeze * .25;
+      blade.setAttribute('d', `M${x-width/2} ${y}C${lower-width*.45} ${y-height*.35} ${upper-width*.2} ${y-height*.76} ${tip} ${y-height}C${upper+width*.2} ${y-height*.76} ${lower+width*.45} ${y-height*.35} ${x+width/2} ${y}Z`);
+    });
+  }
   function resetFace() {
     level = oldLevel = bodyLevel = 0;
     bendStem(0, true);
+    bendGrass(0, true);
     petals.setAttribute('transform', `rotate(${rotation.toFixed(2)})`);
     mouth.setAttribute('opacity', '0'); smile.setAttribute('opacity', '1');
     blush.setAttribute('opacity', '0'); halo.setAttribute('r', '40');
@@ -149,6 +175,7 @@
       rotation = (rotation + dt * (4 + level * 330) + punch * 72) % 360;
       petals.setAttribute('transform', `rotate(${rotation.toFixed(2)}) scale(${(1 + level * .39 + punch * .2).toFixed(3)})`);
       bendStem(bodyLevel);
+      bendGrass(bodyLevel);
       halo.setAttribute('r', (40 + level * 18).toFixed(2));
       pollen.forEach(({dot,offset,radius}, index) => {
         const cycle = (phase * (.028 + index * .0011) + offset) % 1;
@@ -209,6 +236,7 @@
     else schedule();
   });
   reduced.addEventListener('change', () => { resetFace(); resetPollen(); eyes.forEach(eye => eye.removeAttribute('transform')); schedule(); });
+  bendGrass(0, true);
   root.hidden = false;
   new IntersectionObserver(entries => {
     inView = entries[0].isIntersecting;
