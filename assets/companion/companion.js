@@ -3,12 +3,14 @@
   const root = document.getElementById('garden-companion');
   if (!root) return;
   const flower = root.querySelector('.companion-flower');
+  const drawing = flower.querySelector('svg');
   const stop = root.querySelector('.companion-stop');
   const motion = root.querySelector('.companion-motion');
   const status = root.querySelector('.companion-status');
   const audio = root.querySelector('audio');
   const head = root.querySelector('.companion-head');
-  const shoot = root.querySelector('.companion-shoot');
+  const stem = root.querySelector('.companion-stem');
+  const leaves = [...root.querySelectorAll('.companion-leaves path')];
   const petals = root.querySelector('.companion-petals');
   const eyes = [...root.querySelectorAll('.companion-eye')];
   const smile = root.querySelector('.companion-smile');
@@ -16,6 +18,10 @@
   const blush = root.querySelector('.companion-blush');
   const halo = root.querySelector('.companion-halo');
   const seeds = root.querySelector('.companion-seeds');
+  const pollen = [...seeds.children].map((dot, index) => ({
+    dot, offset: index / seeds.children.length, radius: +dot.getAttribute('r'),
+    x: +dot.getAttribute('cx'), y: +dot.getAttribute('cy')
+  }));
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
   const data = window.gardenCompanionSounds;
   delete window.gardenCompanionSounds;
@@ -25,6 +31,8 @@
   let gazeX = 0, gazeY = 0, targetX = 0, targetY = 0;
   let blinkAt = 3, blinkStart = -1;
   let motionPaused = false;
+  let pointerX = 0, pointerY = 0, pointerActive = false;
+  let bodyLevel = 0, bloomPoint = {x:121,y:79}, drawingBox, boundsDirty = true;
   const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
   // The flower remembers each recording's measured envelope; no sound analysis runs on the phone.
   const nextSound = sounds => {
@@ -39,9 +47,41 @@
     last = bag.pop();
     return sounds[last];
   };
+  function bendStem(energy, still = false) {
+    const point = fraction => {
+      const wave = still ? 0 : Math.sin(phase * .9 - fraction * 2.4) * (4 + energy * 17) * fraction
+        + Math.sin(phase * 1.7 - fraction * 3.2) * (1 + energy * 8) * fraction * fraction;
+      return {
+        x: 110 + 11 * fraction + Math.sin(fraction * Math.PI) * 4 + wave,
+        y: 315 - 236 * fraction + (still ? 0 : Math.sin(phase * 1.4 - fraction * 2.2) * (1 + energy * 2) * fraction)
+      };
+    };
+    const points = Array.from({length:9}, (_, i) => point(i / 8));
+    let curve = 'M110 315';
+    for (let i = 1; i < points.length - 1; i++) {
+      const p = points[i], next = points[i + 1];
+      const end = i === points.length - 2 ? next : {x:(p.x + next.x) / 2,y:(p.y + next.y) / 2};
+      curve += `Q${p.x.toFixed(2)} ${p.y.toFixed(2)} ${end.x.toFixed(2)} ${end.y.toFixed(2)}`;
+    }
+    stem.setAttribute('d', curve);
+    leaves.forEach((leaf, index) => {
+      const f = [.31,.5,.68][index], p = point(f), above = point(f + .02);
+      const angle = Math.atan2(above.x - p.x, p.y - above.y) * 180 / Math.PI;
+      const flutter = still ? 0 : Math.sin(phase * 2.2 - index * 1.7) * (2 + energy * 6);
+      leaf.setAttribute('transform', `translate(${p.x.toFixed(2)} ${p.y.toFixed(2)}) rotate(${(angle + flutter).toFixed(2)})`);
+    });
+    const tip = points[8];
+    bloomPoint = tip;
+    head.setAttribute('transform', `translate(${tip.x.toFixed(2)} ${tip.y.toFixed(2)}) rotate(${(still ? 0 : Math.sin(phase * 1.15) * 3 + gazeX * .65).toFixed(2)}) scale(1.25)`);
+  }
+  function resetPollen() {
+    pollen.forEach(({dot,x,y,radius}) => {
+      dot.setAttribute('cx', x); dot.setAttribute('cy', y); dot.setAttribute('r', radius); dot.removeAttribute('opacity');
+    });
+  }
   function resetFace() {
-    level = oldLevel = 0;
-    shoot.removeAttribute('transform');
+    level = oldLevel = bodyLevel = 0;
+    bendStem(0, true);
     petals.setAttribute('transform', `rotate(${rotation.toFixed(2)})`);
     mouth.setAttribute('opacity', '0'); smile.setAttribute('opacity', '1');
     blush.setAttribute('opacity', '0'); halo.setAttribute('r', '40');
@@ -98,19 +138,33 @@
     if (previous && now - previous < 32) { schedule(); return; }
     const dt = previous ? Math.min((now - previous) / 1000, .08) : 1 / 30;
     previous = now; phase += dt;
+    if (boundsDirty) { drawingBox = drawing.getBoundingClientRect(); boundsDirty = false; }
     const measured = envelope();
     level += (measured - level) * (measured > level ? .65 : .22);
     const punch = Math.max(0, level - oldLevel);
     oldLevel = level;
+    bodyLevel += (level - bodyLevel) * .1;
     if (!reduced.matches) {
       // Quick petals, a slower stem: the bloom catches each attack before the body sways.
-      rotation = (rotation + dt * (2.5 + level * 105) + punch * 38) % 360;
-      petals.setAttribute('transform', `rotate(${rotation.toFixed(2)}) scale(${(1 + level * .36 + punch * .18).toFixed(3)})`);
-      const lean = Math.sin(phase * (.8 + level * .7)) * (1.2 + level * 2.7);
-      shoot.setAttribute('transform', `rotate(${lean.toFixed(2)} 110 315)`);
+      rotation = (rotation + dt * (4 + level * 330) + punch * 72) % 360;
+      petals.setAttribute('transform', `rotate(${rotation.toFixed(2)}) scale(${(1 + level * .39 + punch * .2).toFixed(3)})`);
+      bendStem(bodyLevel);
       halo.setAttribute('r', (40 + level * 18).toFixed(2));
-      seeds.setAttribute('transform', `translate(${(Math.sin(phase * .65) * 2).toFixed(2)} ${(Math.sin(phase * .9) * 3).toFixed(2)})`);
-      gazeX += (targetX - gazeX) * .16; gazeY += (targetY - gazeY) * .16;
+      pollen.forEach(({dot,offset,radius}, index) => {
+        const cycle = (phase * (.028 + index * .0011) + offset) % 1;
+        const spread = 47 + (index % 3) * 13 + level * 8;
+        const x = 110 + Math.sin(cycle * Math.PI * 2 + index * 2.4) * spread + Math.sin(phase * .48 + index) * 6;
+        const y = 310 - cycle * 270 + Math.sin(phase * .65 + index) * 7;
+        dot.setAttribute('cx', x.toFixed(2)); dot.setAttribute('cy', y.toFixed(2));
+        dot.setAttribute('r', (radius * (1 + level * .25)).toFixed(2));
+        dot.setAttribute('opacity', (Math.sin(cycle * Math.PI) * .85).toFixed(2));
+      });
+      if (pointerActive) {
+        const scale = drawingBox.width / 220;
+        targetX = clamp((pointerX - drawingBox.left - bloomPoint.x * scale) / 48, -4, 4);
+        targetY = clamp((pointerY - drawingBox.top - bloomPoint.y * scale) / 65, -2.6, 2.6);
+      }
+      gazeX += (targetX - gazeX) * .23; gazeY += (targetY - gazeY) * .23;
       if (phase > blinkAt && blinkStart < 0) blinkStart = phase;
       let open = 1;
       if (blinkStart >= 0) {
@@ -131,12 +185,13 @@
   function schedule() { if (!frame && inView && !document.hidden && !motionPaused) frame = requestAnimationFrame(draw); }
   document.addEventListener('pointermove', event => {
     if (!inView || reduced.matches || motionPaused) return;
-    const box = head.getBoundingClientRect();
-    targetX = clamp((event.clientX - box.x - box.width / 2) / 120, -1.6, 1.6);
-    targetY = clamp((event.clientY - box.y - box.height / 2) / 140, -1.4, 1.4);
+    pointerX = event.clientX; pointerY = event.clientY; pointerActive = true;
     schedule();
   }, {passive:true});
-  document.documentElement.addEventListener('pointerleave', () => { targetX = targetY = 0; });
+  document.documentElement.addEventListener('pointerleave', () => { pointerActive = false; targetX = targetY = 0; });
+  window.addEventListener('scroll', () => { boundsDirty = true; }, {passive:true});
+  window.addEventListener('resize', () => { boundsDirty = true; }, {passive:true});
+  new ResizeObserver(() => { boundsDirty = true; }).observe(drawing);
   flower.addEventListener('click', play);
   stop.addEventListener('click', () => { stopSound(''); flower.focus({preventScroll:true}); });
   motion.addEventListener('click', () => {
@@ -144,7 +199,7 @@
     motion.setAttribute('aria-pressed', String(motionPaused));
     motion.textContent = motionPaused ? 'Resume motion' : 'Pause motion';
     cancelAnimationFrame(frame); frame = 0; previous = 0;
-    resetFace(); seeds.removeAttribute('transform'); eyes.forEach(eye => eye.removeAttribute('transform'));
+    resetFace(); resetPollen(); eyes.forEach(eye => eye.removeAttribute('transform'));
     schedule();
   });
   audio.addEventListener('ended', () => { active = null; finish('Another sound is waiting.'); });
@@ -153,7 +208,7 @@
     if (document.hidden) { stopSound(); cancelAnimationFrame(frame); frame = 0; previous = 0; }
     else schedule();
   });
-  reduced.addEventListener('change', () => { resetFace(); seeds.removeAttribute('transform'); eyes.forEach(eye => eye.removeAttribute('transform')); schedule(); });
+  reduced.addEventListener('change', () => { resetFace(); resetPollen(); eyes.forEach(eye => eye.removeAttribute('transform')); schedule(); });
   root.hidden = false;
   new IntersectionObserver(entries => {
     inView = entries[0].isIntersecting;
