@@ -4,8 +4,9 @@ ON A PHONE
 Open the interactive booklet in your browser:
 https://listening.garden/wild-grafting/
 
-The web edition includes the sound examples, moving ambisonic field and
-complete Garden Voices album. Tap Play to begin. No installation is needed.
+The web edition includes listening examples, moving ambisonic fields,
+six short paired comparisons, and the complete Garden Voices bonus album.
+Tap Play to begin. No installation is needed.
 
 TO READ
 Open Wild_Grafting_Listening_Booklet.pdf, beside this file.
@@ -13,14 +14,24 @@ Its listening links and final-page QR code open the web booklet.
 
 ON A COMPUTER
 Unzip the whole folder, then open Open Wild Grafting.html.
-Keep the assets folder beside it. The downloaded edition includes all
-listening examples and the complete Garden Voices album for offline use.
+Keep the assets folder beside it. The downloaded edition includes the
+listening examples, paired excerpts and complete Garden Voices bonus
+album for offline use. The full Wild Grafting album is on Bandcamp:
+https://listeninggarden.bandcamp.com/album/wild-grafting
 
-Wild Grafting with the Garden Voices appears before the closing
-“Carry the connections” section. Choose a track or play all six in order.
+TWO CASTS
+The paired comparisons appear before the closing "Carry the connections"
+section. Choose a passage, then switch between Wild Grafting and Garden
+Voices at the same moment. Garden Voices uses an earlier version of the
+score; some passages changed before the Wild Grafting release.
 
-The moving field follows a short passage from Stutter Botany.
-Turn the sphere or tap a snapshot to explore the arrangement.
-These controls change the drawing; the music keeps its original mix.
+FOLLOW THE FIELD
+Small field drawings accompany the recordings. The larger Stutter Botany
+field lets you turn the view, follow individual roles, or choose a moment
+with the slider directly beneath the sphere. The sixteen snapshots show
+how the arrangement moves through the passage.
+
+Under "Beneath the leaves: shape a path," sketch a possible spatial path
+for a gesture. This is an editable drawing; it does not change the recording.
 
 Headphone listening recommended.

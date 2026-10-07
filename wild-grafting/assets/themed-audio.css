@@ -1,0 +1,22 @@
+/* Cream paper, pink progress, violet controls. Each range has a full 44px touch area. */
+.garden-audio{--audio-pink:#e51b83;--audio-purple:#54218e;position:relative;display:grid;grid-template-columns:44px minmax(0,1fr) 44px 76px;gap:10px;align-items:start;min-width:0;width:100%;padding:12px;background:#f4e7ef;border:1px solid #54218e55;color:var(--audio-purple);grid-column:1/-1}
+audio.garden-audio-native{position:absolute!important;top:0;left:0;width:1px!important;height:1px!important;overflow:hidden;clip-path:inset(50%);pointer-events:none;opacity:0;margin:0!important}
+.garden-audio button.garden-audio-play,.garden-audio button.garden-audio-mute{display:flex;align-items:center;justify-content:center;width:44px;height:44px;min-width:44px;min-height:44px;border:1px solid var(--audio-purple);padding:10px;background:var(--audio-purple);color:var(--paper,#faf8f0);border-radius:50%;cursor:pointer}
+.garden-audio button.garden-audio-mute{background:transparent;color:var(--audio-purple);border-color:transparent}
+.garden-audio button.garden-audio-play:hover{background:#7236ac;color:white}
+.garden-audio button.garden-audio-mute:hover{background:#54218e12;color:var(--audio-purple)}
+.garden-audio button svg{width:22px;height:22px;flex:none}
+.garden-audio .garden-audio-timeline{min-width:0}
+.garden-audio .garden-audio-times{display:flex;justify-content:space-between;gap:8px;min-height:16px;font:11px/1.4 var(--mono,monospace);color:var(--audio-purple);font-variant-numeric:tabular-nums;margin-top:-4px}
+.garden-audio input[type=range]{--audio-progress:0%;-webkit-appearance:none;appearance:none;display:block;width:100%;min-width:0;height:44px;margin:0;padding:0;border:0;background:transparent;color:var(--audio-purple);cursor:pointer;touch-action:pan-y}
+.garden-audio input[type=range]::-webkit-slider-runnable-track{height:6px;border-radius:3px;background:linear-gradient(to right,var(--audio-pink) 0 var(--audio-progress),#54218e40 var(--audio-progress) 100%)}
+.garden-audio input[type=range]::-moz-range-track{height:6px;border-radius:3px;background:linear-gradient(to right,var(--audio-pink) 0 var(--audio-progress),#54218e40 var(--audio-progress) 100%)}
+.garden-audio input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:24px;height:24px;border-radius:50%;border:2px solid var(--audio-purple);background:var(--audio-pink);margin-top:-9px;box-shadow:0 0 0 3px #faf8f0}
+.garden-audio input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;border:2px solid var(--audio-purple);background:var(--audio-pink);box-shadow:0 0 0 3px #faf8f0}
+.garden-audio input[type=range]:disabled{opacity:.45;cursor:default}
+.garden-audio button:focus-visible,.garden-audio input:focus-visible{outline:3px solid #144f9e;outline-offset:3px}
+.garden-audio .garden-audio-message{grid-column:1/-1;font:13px/1.5 var(--display,sans-serif);color:#913149}
+.garden-audio-message:empty{display:none}
+.wg-transport>.garden-audio{margin-bottom:12px}
+@media(max-width:680px),(pointer:coarse){.garden-audio{grid-template-columns:44px minmax(0,1fr) 44px;gap:9px;padding:10px}.garden-audio .garden-audio-volume{display:none!important}}
+@media print{.garden-audio{display:none!important}}

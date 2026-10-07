@@ -21,9 +21,9 @@
     svg.appendChild(el('text', { x, y, fill, 'font-family': mono, 'font-size': size, 'text-anchor': anchor, 'font-weight': weight }, text));
   }
   function setupAudio() {
-    document.querySelectorAll('audio').forEach(audio => {
+    document.querySelectorAll('audio:not([data-comparison-buddy])').forEach(audio => {
       audio.addEventListener('play', () => {
-        document.querySelectorAll('audio').forEach(other => { if (other !== audio) other.pause(); });
+        document.querySelectorAll('audio:not([data-comparison-buddy])').forEach(other => { if (other !== audio) (other.gardenTransport || other).pause(); });
         const existing = audio.id === 'field-audio' ? $('field-audio-error') : audio.parentElement.querySelector('.wg-audio-error');
         if (existing) existing.hidden = true;
       });

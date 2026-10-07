@@ -1,0 +1,65 @@
+.album-comparison{background:transparent;padding-left:0;padding-right:0}
+.comparison-switch{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin:26px 0 18px}
+.album-comparison .comparison-switch button{min-width:0;min-height:78px;text-align:left;padding:12px 16px;border:2px solid var(--rule);color:var(--ink)}
+.comparison-switch button>span{display:block}
+.comparison-switch button>span:first-child{font-size:20px;font-weight:700;line-height:1.2}
+.comparison-selection{font:12px/1.4 var(--mono);margin-top:7px}
+.album-comparison .comparison-switch [aria-pressed=true]{border-color:var(--violet);box-shadow:inset 0 -4px var(--violet);background:#54218e09}
+.comparison-switch [aria-pressed=true] .comparison-selection::before{content:'✓ ';font-weight:bold}
+.comparison-current{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:0 20px;padding:22px;border:1px solid var(--rule);border-top:2px solid var(--violet);margin-bottom:24px}
+.comparison-current .eyebrow{margin:0 0 9px}
+.comparison-current h3{font-size:24px;line-height:1.25;margin:0 0 5px;overflow-wrap:anywhere}
+.comparison-current #comparison-track-origin{font-size:14px;color:#625766;margin:0 0 18px}
+.comparison-current #comparison-play{grid-column:2;grid-row:1/4;align-self:start;min-width:76px}
+.comparison-current audio,.comparison-field-slot,.comparison-navigation,.comparison-status{grid-column:1/-1;min-width:0}
+.comparison-navigation{display:flex;align-items:center;gap:12px;margin-top:16px;flex-wrap:wrap}
+.comparison-navigation button{font-size:14px;padding:8px 12px}
+.comparison-navigation span{font-size:13px;line-height:1.4;margin-left:auto}
+.comparison-status{font-size:14px;line-height:1.5;margin:14px 0 0}
+.comparison-status:empty{display:none}
+.comparison-albums{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.comparison-album{min-width:0;border:1px solid var(--rule);padding:20px 16px 12px;position:relative}
+.comparison-album[data-selected=true]{border-color:var(--violet);box-shadow:inset 0 4px var(--violet)}
+.comparison-album[data-album-panel=voices][data-selected=true]{border-color:var(--green);box-shadow:inset 0 4px var(--green)}
+.comparison-album h3{font-size:25px;line-height:1.2;margin:0 0 8px}
+.comparison-album .eyebrow{font-size:11px;margin:0 0 9px}
+.comparison-panel-state{font:12px/1.4 var(--mono);display:block;min-height:24px;color:var(--violet)}
+.comparison-album[data-selected=true] .comparison-panel-state::before{content:'✓ '}
+.comparison-tracks{list-style:none;margin:16px 0 0;padding:0}
+.comparison-tracks li{border-top:1px solid var(--rule)}
+.album-comparison .comparison-tracks button{display:grid;grid-template-columns:24px minmax(0,1fr) auto;gap:8px;align-items:center;width:100%;min-height:100px;border:0;padding:12px 5px;text-align:left;background:transparent;color:var(--ink)}
+.comparison-track-number,.comparison-track-length,.comparison-track-action{font:12px/1.4 var(--mono)}
+.comparison-track-number{color:var(--magenta)}
+.comparison-track-name{font-size:17px;font-weight:650;line-height:1.3;overflow-wrap:anywhere}
+.comparison-track-name small{display:block;font-size:12px;font-weight:400;color:#625766;line-height:1.4;margin-top:5px}
+.comparison-track-end{display:flex;flex-direction:column;align-items:flex-end;gap:7px}
+.comparison-track-action{color:var(--violet)}
+.album-comparison .comparison-tracks button[data-paired=true]{background:#54218e08}
+.album-comparison .comparison-tracks button[aria-current=true]{box-shadow:inset 3px 0 var(--violet);padding-left:8px;color:var(--violet)}
+.comparison-files{margin:24px 0 0;font-size:14px}
+.comparison-files summary{min-height:44px;padding:10px 0;cursor:pointer;color:var(--violet)}
+.comparison-files p{margin:10px 0;line-height:1.6}
+.comparison-files a{display:inline-block;min-height:44px;padding:8px 4px}
+@media(max-width:680px){
+  .comparison-switch{gap:9px;margin-top:22px}
+  .album-comparison .comparison-switch button{padding:12px 10px;min-height:86px}
+  .comparison-switch button>span:first-child{font-size:18px}
+  .comparison-selection{font-size:10px}
+  .comparison-albums{display:block}
+  .comparison-album[data-selected=false]{display:none}
+  .comparison-album{padding:18px 12px 8px}
+  .comparison-current{padding:18px 12px;gap:0 9px}
+  .comparison-current h3{font-size:21px}
+  .comparison-current #comparison-play{min-width:64px;padding:8px 10px}
+  .comparison-navigation{gap:8px}
+  .comparison-navigation span{flex-basis:100%;margin-left:0}
+  .album-comparison .comparison-tracks button{min-height:88px}
+}
+@media print{.comparison-switch,.comparison-current,.comparison-track-action,.comparison-files{display:none!important}.comparison-album[data-selected=false]{display:block}.comparison-albums{display:grid}.comparison-album{break-inside:avoid}.album-comparison .comparison-tracks button{min-height:0;padding:7px 4px}}
+.garden-full-album { margin-top:3rem; padding-top:2rem; border-top:2px solid var(--purple,#54218e); }
+.garden-full-album h3 { font-size:clamp(1.5rem,3vw,2.3rem); margin:.4rem 0 1rem; }
+.garden-full-album > p { max-width:65ch; }
+.garden-full-album > .mini-field { margin-top:1.5rem; }
+.garden-full-album > .garden-audio { margin:1.5rem 0; }
+.garden-full-tracks { max-width:52rem; margin-top:1.5rem; }
+.garden-full-tracks [aria-current="true"] { border-left:4px solid #df1d7c; background:#f5edf4; }

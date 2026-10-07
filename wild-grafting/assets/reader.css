@@ -33,3 +33,7 @@ body{padding-bottom:var(--now-playing-clearance,0px)}
 
 .garden-companion{width:100%;margin:48px 0 0;scroll-margin-top:24px}
 @media print{.garden-player-panel,.garden-play-label{display:none!important}.garden-companion{margin-top:24px;padding:20px 0;background:none}.garden-tracks button{background:none!important;color:black;text-align:left;padding:7px 0}.garden-album h2{font-size:24pt}}
+
+/* Keep the time control beside the drawing it changes, including on phones. */
+.wg-field-drawing .wg-seek{margin:4px 0 0;padding-top:12px;border-top:1px solid var(--rule)}
+.wg-field-drawing .wg-canvas-hint{margin-top:6px}
