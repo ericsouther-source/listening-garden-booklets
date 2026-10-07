@@ -12,6 +12,7 @@
   const stem = root.querySelector('.companion-stem');
   const leaves = [...root.querySelectorAll('.companion-leaves path')];
   const petals = root.querySelector('.companion-petals');
+  const petalInk = root.querySelector('#companion-pink-ink > path');
   const eyes = [...root.querySelectorAll('.companion-eye')];
   const smile = root.querySelector('.companion-smile');
   const mouth = root.querySelector('.companion-mouth');
@@ -49,6 +50,8 @@
   let motionPaused = false;
   let pointerX = 0, pointerY = 0, pointerActive = false;
   let bodyLevel = 0, bloomPoint = {x:121,y:79}, drawingBox, boundsDirty = true;
+  let mouthLevel = 0, toneLevel = 0;
+  const inks = [[243,43,139],[108,47,171],[36,148,104]];
   const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
   // The flower remembers each recording's measured envelope; no sound analysis runs on the phone.
   const nextSound = sounds => {
@@ -105,7 +108,8 @@
     });
   }
   function resetFace() {
-    level = oldLevel = bodyLevel = 0;
+    level = oldLevel = bodyLevel = mouthLevel = toneLevel = 0;
+    petalInk.setAttribute('fill', '#f32b8b');
     bendStem(0, true);
     bendGrass(0, true);
     petals.setAttribute('transform', `rotate(${rotation.toFixed(2)})`);
@@ -151,12 +155,24 @@
       finish('Couldn’t play that sound. Tap to try again.');
     }
   }
-  function envelope() {
+  function soundFeature(name) {
     if (!active || audio.paused || audio.ended || audio.readyState < 2) return 0;
     const position = audio.currentTime * active.fps;
     const index = Math.floor(position), mix = position - index;
-    const a = active.envelope[index] || 0, b = active.envelope[index + 1] || 0;
+    const values = active[name] || [];
+    const a = values[index] || 0, b = values[index + 1] || 0;
     return a + (b - a) * mix;
+  }
+  function colorPetals() {
+    // Brightness steers the inks slowly; the rhythm moves the petals, without flashing them.
+    const position = clamp(toneLevel, 0, 1) * 2;
+    const index = Math.min(1, Math.floor(position)), mix = position - index;
+    const amount = active && !audio.paused ? clamp(bodyLevel * 1.5, 0, 1) : 0;
+    const ink = inks[index].map((channel, i) => {
+      const target = channel + (inks[index + 1][i] - channel) * mix;
+      return Math.round(inks[0][i] + (target - inks[0][i]) * amount);
+    });
+    petalInk.setAttribute('fill', `rgb(${ink.join(',')})`);
   }
   function draw(now) {
     frame = 0;
@@ -165,15 +181,19 @@
     const dt = previous ? Math.min((now - previous) / 1000, .08) : 1 / 30;
     previous = now; phase += dt;
     if (boundsDirty) { drawingBox = drawing.getBoundingClientRect(); boundsDirty = false; }
-    const measured = envelope();
+    const measured = soundFeature('envelope');
     level += (measured - level) * (measured > level ? .65 : .22);
     const punch = Math.max(0, level - oldLevel);
     oldLevel = level;
     bodyLevel += (level - bodyLevel) * .1;
+    const articulation = soundFeature('mouth');
+    mouthLevel += (articulation - mouthLevel) * (articulation > mouthLevel ? .85 : .65);
+    toneLevel += (soundFeature('tone') - toneLevel) * .06;
     if (!reduced.matches) {
       // Quick petals, a slower stem: the bloom catches each attack before the body sways.
-      rotation = (rotation + dt * (4 + level * 330) + punch * 72) % 360;
+      rotation = (rotation + dt * (12 + level * 330) + punch * 72) % 360;
       petals.setAttribute('transform', `rotate(${rotation.toFixed(2)}) scale(${(1 + level * .39 + punch * .2).toFixed(3)})`);
+      colorPetals();
       bendStem(bodyLevel);
       bendGrass(bodyLevel);
       halo.setAttribute('r', (40 + level * 18).toFixed(2));
@@ -201,11 +221,11 @@
       }
       eyes.forEach(eye => eye.setAttribute('transform', `translate(${gazeX.toFixed(2)} ${gazeY.toFixed(2)}) scale(1 ${open.toFixed(2)})`));
     }
-    const singing = level > .06;
+    const singing = mouthLevel > .32;
     smile.setAttribute('opacity', singing ? '0' : '1');
     mouth.setAttribute('opacity', singing ? '1' : '0');
-    mouth.setAttribute('ry', (1 + level * 4).toFixed(2));
-    mouth.setAttribute('rx', (2.3 + level * 1.8).toFixed(2));
+    mouth.setAttribute('ry', (.7 + mouthLevel * 4.5).toFixed(2));
+    mouth.setAttribute('rx', (2 + mouthLevel * 2).toFixed(2));
     blush.setAttribute('opacity', (level * .48).toFixed(2));
     if (!reduced.matches || !audio.paused) schedule();
   }
