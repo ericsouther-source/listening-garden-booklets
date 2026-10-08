@@ -26,6 +26,7 @@
     let pendingSeek = null;
 
     function duration() {
+      if (audio.gardenTransport) return media.duration;
       if (audio.readyState >= 1 && Number.isFinite(audio.duration)) return audio.duration;
       const filename = decodeURIComponent((audio.dataset.fieldFile || audio.getAttribute('src') || '').split('/').pop());
       return window.WG_FIELD_CATALOG?.audio?.[filename]?.duration || 0;
@@ -65,7 +66,7 @@
     play.addEventListener('click', () => {
       if (!media.paused && !media.ended) { media.pause(); return; }
       message.textContent = '';
-      if (audio.error) audio.load();
+      if (!audio.gardenTransport && audio.error) audio.load();
       // Called directly from the tap so mobile browsers can authorize playback.
       const result = media.play();
       if (result) result.catch(error => {
@@ -86,10 +87,10 @@
     });
     mute.addEventListener('click', () => { media.muted = !media.muted; });
     volume.addEventListener('input', () => { media.volume = Number(volume.value); media.muted = false; });
-    ['play', 'pause', 'ended', 'timeupdate', 'durationchange', 'volumechange', 'gardenvolumechange', 'gardenstatechange', 'seeked'].forEach(event => audio.addEventListener(event, update));
+    ['play', 'pause', 'ended', 'timeupdate', 'durationchange', 'volumechange', 'gardenvolumechange', 'gardenstatechange', 'gardentimeupdate', 'seeked'].forEach(event => audio.addEventListener(event, update));
     audio.addEventListener('loadedmetadata', () => { applySeek(); update(); });
     audio.addEventListener('playing', () => { message.textContent = ''; update(); });
-    audio.addEventListener('error', () => { message.textContent = 'This recording could not load. Try Play again or use its recording link.'; update(); });
+    audio.addEventListener('error', () => { if (audio.gardenTransport) return; message.textContent = 'This recording could not load. Try Play again or use its recording link.'; update(); });
     audio.addEventListener('albumtrackchange', () => { pendingSeek = null; message.textContent = ''; update(); });
     audio.addEventListener('emptied', update);
     update();

@@ -23,11 +23,13 @@
   function setupAudio() {
     document.querySelectorAll('audio:not([data-comparison-buddy])').forEach(audio => {
       audio.addEventListener('play', () => {
+        if (audio.gardenTransport) return;
         document.querySelectorAll('audio:not([data-comparison-buddy])').forEach(other => { if (other !== audio) (other.gardenTransport || other).pause(); });
         const existing = audio.id === 'field-audio' ? $('field-audio-error') : audio.parentElement.querySelector('.wg-audio-error');
         if (existing) existing.hidden = true;
       });
       audio.addEventListener('error', () => {
+        if (audio.gardenTransport) return;
         let error = audio.id === 'field-audio' ? $('field-audio-error') : audio.parentElement.querySelector('.wg-audio-error');
         if (!error) { error = document.createElement('p'); error.className = 'wg-audio-error'; error.setAttribute('role', 'status'); audio.insertAdjacentElement('afterend', error); }
         error.replaceChildren(document.createTextNode('This browser could not play the excerpt. Keep the entire booklet folder together, or '));

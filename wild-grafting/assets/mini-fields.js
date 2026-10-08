@@ -121,11 +121,11 @@
     function stop() { cancelAnimationFrame(raf);raf=0;lastFrame=0; }
     function tick(now) {
       raf=0;
-      if(!visible||document.hidden||audio.paused||!follow.checked)return;
+      if(!visible||document.hidden||(audio.gardenTransport || audio).paused||!follow.checked)return;
       if(!lastFrame||now-lastFrame>=48){lastFrame=now;moment=currentTime();draw();}
       raf=requestAnimationFrame(tick);
     }
-    function start() { if(!raf&&visible&&!document.hidden&&!audio.paused&&follow.checked)raf=requestAnimationFrame(tick); }
+    function start() { if(!raf&&visible&&!document.hidden&&!(audio.gardenTransport || audio).paused&&follow.checked)raf=requestAnimationFrame(tick); }
     async function bind() {
       const token=++serial;entry=lookup();data=null;key.replaceChildren();labels=[];
       error.hidden=true;container.dataset.ready='false';
@@ -143,9 +143,14 @@
       }catch(_){if(token===serial){error.textContent='The field drawing could not load. The recording is still available.';error.hidden=false;}}
     }
     audio.addEventListener('play',()=>{if(!data)bind();start();});
-    audio.addEventListener('pause',()=>{stop();if(follow.checked){moment=currentTime();draw();}});
-    audio.addEventListener('ended',()=>{stop();if(follow.checked){moment=currentTime();draw();}});
+    audio.addEventListener('pause',()=>{if(audio.gardenTransport)return;stop();if(follow.checked){moment=currentTime();draw();}});
+    audio.addEventListener('ended',()=>{if(audio.gardenTransport)return;stop();if(follow.checked){moment=currentTime();draw();}});
     audio.addEventListener('seeked',()=>{moment=currentTime();draw();});
+    audio.addEventListener('gardenstatechange',()=>{
+      if((audio.gardenTransport || audio).paused)stop();else start();
+      if(follow.checked){moment=currentTime();draw();}
+    });
+    audio.addEventListener('gardentimeupdate',()=>{if(follow.checked){moment=currentTime();draw();}});
     audio.addEventListener('albumtrackchange',bind);
     follow.addEventListener('change',()=>{if(follow.checked){moment=currentTime();draw();start();}else stop();});
     reduced.addEventListener('change',event=>{if(event.matches){follow.checked=false;stop();}});
