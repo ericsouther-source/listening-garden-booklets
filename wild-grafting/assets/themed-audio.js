@@ -86,7 +86,7 @@
     });
     mute.addEventListener('click', () => { media.muted = !media.muted; });
     volume.addEventListener('input', () => { media.volume = Number(volume.value); media.muted = false; });
-    ['play', 'pause', 'ended', 'timeupdate', 'durationchange', 'volumechange', 'gardenvolumechange', 'seeked'].forEach(event => audio.addEventListener(event, update));
+    ['play', 'pause', 'ended', 'timeupdate', 'durationchange', 'volumechange', 'gardenvolumechange', 'gardenstatechange', 'seeked'].forEach(event => audio.addEventListener(event, update));
     audio.addEventListener('loadedmetadata', () => { applySeek(); update(); });
     audio.addEventListener('playing', () => { message.textContent = ''; update(); });
     audio.addEventListener('error', () => { message.textContent = 'This recording could not load. Try Play again or use its recording link.'; update(); });

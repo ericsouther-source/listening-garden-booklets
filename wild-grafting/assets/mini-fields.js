@@ -52,7 +52,7 @@
       const filename = decodeURIComponent(new URL(audio.dataset.fieldFile || audio.getAttribute('src') || '', location.href).pathname.split('/').pop());
       return catalog.audio[filename];
     }
-    function currentTime() { return clamp((entry?.origin || 0) + (audio.currentTime || 0), 0, data?.duration || 0); }
+    function currentTime() { return clamp((entry?.origin || 0) + ((audio.gardenTransport || audio).currentTime || 0), 0, data?.duration || 0); }
     function activeAt(t, role) {
       const intervals = (entry.edition === 'garden' ? data.gardenActivity : data.activity)[role];
       const sample = Math.floor(t * data.sampleRate);

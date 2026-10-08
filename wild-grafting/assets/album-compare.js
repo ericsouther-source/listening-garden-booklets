@@ -24,16 +24,34 @@
   const find = (index, albumSide) => tracks.find(button => Number(button.dataset.trackIndex) === index && button.dataset.albumSide === albumSide);
   const label = albumSide => albumSide === 'original' ? 'Wild Grafting' : 'Garden Voices';
   let selected = 0, side = 'original', ticket = 0;
-  let wantedPlay = false, started = false, bufferHold = false, ignoredPauses = 0;
+  let wantedPlay = false, started = false, preparing = false, releasing = false, heldPosition = 0;
+  let preparation = null, pendingStart = null;
+  const internalPauses = new Map();
   let userMuted = audio.muted, userVolume = audio.volume;
   const targets = new Map();
 
-  // One clock and two stable recordings: switching casts never replaces a source.
-  function position() { return targets.get(audio) ?? audio.currentTime; }
-  function ready() { return pair.every(p => p.readyState >= 2 && !p.seeking) && Math.abs(audio.currentTime - buddy.currentTime) < .12; }
+  // Keep the listener's clock still while either recording loads or seeks.
+  // Both sources stay attached, so switching casts only changes which is audible.
+  function position() { return started && !preparing ? audio.currentTime : heldPosition; }
   function ink() {
-    pair.forEach(p => { p.muted = true; });
-    if (!userMuted && wantedPlay && !bufferHold && started && ready()) (side === 'original' ? audio : buddy).muted = false;
+    const audible = !userMuted && wantedPlay && (started || releasing) ? (side === 'original' ? audio : buddy) : null;
+    pair.forEach(p => { const muted = p !== audible; if (p.muted !== muted) p.muted = muted; });
+  }
+  function pauseMedia(p) {
+    if (!p.paused) { internalPauses.set(p, (internalPauses.get(p) || 0) + 1); p.pause(); }
+  }
+  function cancelPreparation() {
+    ++ticket;
+    preparation?.abort(); preparation = null; pendingStart = null;
+  }
+  function waitUntil(predicate, signal) {
+    return new Promise((resolve, reject) => {
+      const finish = error => { clearInterval(timer); signal.removeEventListener('abort', abort); error ? reject(error) : resolve(); };
+      const abort = () => finish(new DOMException('Playback request replaced.', 'AbortError'));
+      const check = () => { if (signal.aborted) abort(); else if (predicate()) finish(); };
+      const timer = setInterval(check, 40);
+      signal.addEventListener('abort', abort, { once: true }); check();
+    });
   }
   function draw() {
     switches.forEach(button => {
@@ -56,6 +74,7 @@
     previous.disabled = selected === 0;
     next.disabled = selected === 5;
     play.textContent = wantedPlay ? 'Pause' : 'Play';
+    audio.dispatchEvent(new Event('gardenstatechange'));
   }
   function publishSelection() {
     const track = find(selected, side);
@@ -76,39 +95,73 @@
     try { p.currentTime = Math.min(time, end); targets.delete(p); } catch (_) { /* Apply after metadata. */ }
   }
   function align() {
-    if (!wantedPlay || !started || bufferHold || audio.seeking || targets.has(audio) || buddy.readyState < 1) { ink(); return; }
-    if (!buddy.seeking && Math.abs(audio.currentTime - buddy.currentTime) > .08) setPosition(buddy, audio.currentTime);
-    ink();
+    if (!wantedPlay || !started || preparing || pair.some(p => p.seeking || p.readyState < 2)) return;
+    const drift = audio.currentTime - buddy.currentTime;
+    if (Math.abs(drift) > .12) {
+      // Stop both clocks before a substantial correction. Never chase a moving
+      // clock with repeated seeks: slower decoders can otherwise stay silent.
+      prepare(position(), false, 'Aligning both casts…');
+      return;
+    }
+    const rate = audio.playbackRate * (Math.abs(drift) > .06 ? (drift > 0 ? 1.03 : .97) : 1);
+    if (Math.abs(buddy.playbackRate - rate) > .001) buddy.playbackRate = rate;
   }
   function pause() {
-    wantedPlay = false; bufferHold = false; started = false; ++ticket;
-    pair.forEach(p => p.pause()); ink(); draw();
+    heldPosition = position(); wantedPlay = false; started = false; preparing = false; releasing = false;
+    cancelPreparation(); pair.forEach(pauseMedia); buddy.playbackRate = audio.playbackRate; status.textContent = ''; ink(); draw();
   }
-  function start() {
-    if (audio.ended || buddy.ended) seek(0);
-    wantedPlay = true; bufferHold = false; started = false;
-    const request = ++ticket;
-    pair.forEach(p => { p.preload = 'auto'; p.muted = true; });
-    status.textContent = 'Preparing both casts…';
-    // Both play calls run in the user's gesture, including on phones.
-    const attempts = pair.map(p => {
-      if (targets.has(p)) setPosition(p, targets.get(p));
-      return p.play();
-    });
-    draw();
-    return Promise.all(attempts).then(() => {
-      if (request !== ticket || !wantedPlay) return;
-      started = true; align(); status.textContent = ''; draw();
+  function prepare(time, prime, message) {
+    cancelPreparation(); const request = ticket;
+    preparation = new AbortController(); const signal = preparation.signal;
+    heldPosition = Math.max(0, Number(time) || 0); preparing = true; started = false; releasing = false;
+    pair.forEach(pauseMedia); buddy.playbackRate = audio.playbackRate; ink();
+    pair.forEach(p => { p.preload = 'auto'; });
+    status.textContent = message; draw();
+    const current = () => request === ticket && wantedPlay && !signal.aborted;
+    // Prime both elements directly in the tap. Pause each as soon as its play
+    // promise resolves, so the quicker download cannot consume the passage.
+    let authorization;
+    try {
+      authorization = prime ? Promise.all(pair.map(p => {
+        if (targets.has(p)) setPosition(p, targets.get(p));
+        return p.play().then(() => { if (current()) pauseMedia(p); });
+      })) : Promise.resolve();
+    } catch (error) { authorization = Promise.reject(error); }
+    pendingStart = authorization.then(async () => {
+      if (!current()) return;
+      await waitUntil(() => pair.every(p => p.readyState >= 1), signal);
+      if (!current()) return;
+      pair.forEach(p => setPosition(p, heldPosition));
+      await waitUntil(() => pair.every(p => p.readyState >= 3 && !p.seeking && !targets.has(p)), signal);
+      if (!current()) return;
+      // Configure the audible sink while paused, before restarting the clocks.
+      // Unmuting only after play can otherwise add a large device startup delay.
+      releasing = true; ink();
+      await Promise.all(pair.map(p => p.play()));
+      if (!current()) return;
+      preparing = false; releasing = false; started = true; preparation = null; pendingStart = null;
+      status.textContent = ''; ink(); draw(); align();
     }).catch(error => {
-      if (request !== ticket) return;
+      if (!current()) return;
       pause();
       status.textContent = error.name === 'NotAllowedError' ? 'Tap Play to start both casts together.' : 'The paired recordings could not start. Try Play again.';
     });
+    return pendingStart;
+  }
+  function start() {
+    if (wantedPlay && preparing) return pendingStart || Promise.resolve();
+    if (wantedPlay && started) return Promise.resolve();
+    const time = audio.ended || buddy.ended ? 0 : position();
+    pair.forEach(p => { if (p.error) p.load(); });
+    wantedPlay = true;
+    return prepare(time, true, 'Preparing both casts…');
   }
   function seek(time) {
     const target = Math.max(0, Number(time) || 0);
-    pair.forEach(p => { p.muted = true; setPosition(p, target); });
+    if (wantedPlay) { prepare(target, false, 'Finding the same moment in both casts…'); return; }
+    heldPosition = target;
     pair.forEach(p => {
+      setPosition(p, target);
       if (p.readyState < 1) { p.preload = 'metadata'; if (p.networkState === 0 || p.networkState === 1) p.load(); }
     });
     draw();
@@ -127,7 +180,7 @@
   };
   function select(index, albumSide, shouldPlay = true) {
     if (!find(index, albumSide)) return;
-    pause(); selected = index; side = albumSide; targets.clear();
+    pause(); selected = index; side = albumSide; targets.clear(); heldPosition = 0;
     audio.preload = buddy.preload = 'none';
     audio.src = find(index, 'original').dataset.file;
     buddy.src = find(index, 'voices').dataset.file;
@@ -136,7 +189,10 @@
   }
   function switchCast(albumSide) {
     if (albumSide === side) return;
-    side = albumSide; ink(); publishSelection();
+    side = albumSide;
+    if (wantedPlay && started && Math.abs(audio.currentTime - buddy.currentTime) > .10) prepare(position(), false, 'Aligning both casts…');
+    else ink();
+    publishSelection();
     if (started) status.textContent = 'Same passage, same position. ' + label(side) + ' selected.';
   }
   switches.forEach(button => button.addEventListener('click', () => switchCast(button.dataset.selectAlbum)));
@@ -152,27 +208,25 @@
   pair.forEach(p => {
     p.addEventListener('loadedmetadata', () => { if (targets.has(p)) setPosition(p, targets.get(p)); });
     p.addEventListener('seeked', align);
-    p.addEventListener('canplay', () => {
-      if (wantedPlay && bufferHold && pair.every(q => q.readyState >= 3)) start(); else align();
-    });
+    p.addEventListener('canplay', align);
     p.addEventListener('waiting', () => {
-      if (!wantedPlay || !started || pair.some(q => q.seeking) || bufferHold) return;
-      bufferHold = true;
-      if (!audio.paused) ++ignoredPauses;
-      pair.forEach(q => q.pause()); ink();
-      status.textContent = 'Buffering both casts…';
+      if (wantedPlay && started && !preparing) prepare(position(), false, 'Buffering both casts…');
+    });
+    p.addEventListener('pause', () => {
+      const ignored = internalPauses.get(p) || 0;
+      if (ignored) { internalPauses.set(p, ignored - 1); return; }
+      if (p.paused && wantedPlay && !p.ended) {
+        pause(); status.textContent = '';
+      }
+      draw();
     });
     p.addEventListener('error', () => { pause(); status.textContent = 'A comparison could not load. Choose the passage again to retry.'; });
   });
   audio.addEventListener('play', () => { if (!wantedPlay) start(); draw(); });
-  audio.addEventListener('pause', () => {
-    if (ignoredPauses) { --ignoredPauses; return; }
-    if (audio.paused && wantedPlay && !audio.ended) pause();
-    draw();
-  });
   audio.addEventListener('seeking', () => {
-    if (buddy.readyState >= 1 && Math.abs(audio.currentTime - buddy.currentTime) > .02) setPosition(buddy, audio.currentTime);
-    ink();
+    if (preparing) return;
+    if (wantedPlay && started) prepare(audio.currentTime, false, 'Finding the same moment in both casts…');
+    else { heldPosition = audio.currentTime; if (buddy.readyState >= 1 && Math.abs(audio.currentTime - buddy.currentTime) > .02) setPosition(buddy, audio.currentTime); }
   });
   audio.addEventListener('timeupdate', align);
   buddy.addEventListener('timeupdate', align);
