@@ -57,6 +57,10 @@
     .secondary { display: flex; flex-wrap: wrap; gap: 0 24px; margin-top: 12px; }
     .secondary a { display: inline-flex; align-items: center; min-height: 44px; font-size: 14px; line-height: 1.5; }
     .footer { display: flex; justify-content: space-between; gap: 24px; padding: 28px 0 35px; color: var(--green); }
+    .journal-note { display: grid; grid-template-columns: 1fr auto; gap: 22px; align-items: end; padding: 52px 0 58px; border-bottom: 1px solid var(--rule); }
+    .journal-note h2 { margin-bottom: 8px; font-size: clamp(36px, 4vw, 54px); }
+    .journal-note p:last-child { max-width: 640px; margin: 0; }
+    .journal-note .primary { white-space: nowrap; }
     .footer p { margin: 0; font-size: 14px; }
     .footer .signoff { color: var(--violet); }
     @media (max-width: 850px) {
@@ -81,6 +85,8 @@
       .description, .companion { max-width: 45ch; }
       .actions { margin-top: 24px; }
       .footer { display: block; padding: 24px 0 30px; }
+      .journal-note { display: block; padding: 38px 0 42px; }
+      .journal-note .primary { margin-top: 24px; }
       .footer p + p { margin-top: 6px; }
     }
     @media (max-width: 360px) {
@@ -189,6 +195,14 @@
         </div>
       </div>
     </article>
+    <section class="journal-note" aria-labelledby="journal-heading">
+      <div>
+        <p class="eyebrow"><span>02</span> RESEARCH / LISTENING JOURNAL</p>
+        <h2 id="journal-heading">Notes from the Garden</h2>
+        <p>Album by album, a place to listen alongside the materials, scores and decisions that shaped the music. Begin with <em>Feral Current</em>.</p>
+      </div>
+      <a class="primary" href="journal/">Visit the journal <span aria-hidden="true">→</span></a>
+    </section>
   </main>
   <footer class="footer wrap">
     <p>Listening Garden</p>
