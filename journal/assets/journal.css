@@ -6,3 +6,4 @@
 @media(max-width:390px){.topbar nav a:first-child{display:none}.entry-card{grid-template-columns:82px 1fr}.entry-card h3{font-size:27px}.entry-card .summary{font-size:15px}.entry-card .tag{font-size:9px}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.entry-card h3{transition:none}}
 @media print{body,.essay{background:white;color:black}.wrap{width:100%}.topbar,.player-shell,.article-footer,.essay-side{display:none}.album-stage{grid-template-columns:190px 1fr}.essay{padding:0}.essay-layout{display:block}.essay-copy section{break-inside:avoid}.article-hero h1{color:black}}
+.essay-copy .process-note{font:13px/1.5 var(--mono);color:#526451;margin-top:28px}
