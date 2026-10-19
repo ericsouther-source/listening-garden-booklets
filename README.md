@@ -1,6 +1,8 @@
-# Listening Garden booklets
+# Listening Garden
 
-Album notes, listening studies, interactive spatial drawings, and companion recordings.
+Project notes, listening experiments, album releases, and interactive listening companions.
+
+The local draft uses `journal/` for Notes from the Garden, `experiments/` for exploratory recordings, and the homepage’s Releases section for Bandcamp albums. Feral Current is a listening experiment at `experiments/feral-current/`; its old journal address redirects.
 
 - [Browse the collection](https://listening.garden/)
 - [Wild Grafting](https://listening.garden/wild-grafting/)
