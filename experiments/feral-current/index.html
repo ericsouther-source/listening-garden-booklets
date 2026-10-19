@@ -8,7 +8,8 @@
   <title>Feral Current — Listening experiments</title>
   <link rel="icon" href="../../wild-grafting/assets/lg-icon.png" type="image/png">
   <link rel="stylesheet" href="../../journal/assets/journal.css">
-  <script defer src="../../journal/assets/soundcloud-player.js"></script>
+  <link rel="stylesheet" href="assets/album-player.css?v=20261018">
+  <script defer src="assets/album-player.js?v=20261018"></script>
 </head>
 <body>
   <a class="skip" href="#article">Skip to the listening experiment</a>
@@ -26,17 +27,37 @@
     <section class="album-stage wrap" aria-labelledby="listen-heading">
       <figure class="album-cover">
         <img src="assets/feral-current-soundcloud.jpg" width="500" height="500" alt="Feral Current album artwork: a winding pink current through a dense lime green garden on black.">
-        <figcaption>Artwork from the public SoundCloud album.</figcaption>
+        <figcaption>Feral Current · Listening Garden</figcaption>
       </figure>
       <div class="listen-panel">
         <p class="eyebrow">THE EXPERIMENT / SOUND FIRST</p>
         <h2 id="listen-heading">Start by listening</h2>
         <p class="prompt">A groove offers a way into this dense piece as sounds circle, overlap and return.</p>
-        <div class="player-shell" data-soundcloud-player>
-          <iframe title="Listen to Feral Current on SoundCloud" src="https://w.soundcloud.com/player/?visual=true&amp;url=https%3A%2F%2Fapi.soundcloud.com%2Fplaylists%2F2315877306&amp;show_artwork=true&amp;auto_play=false" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>
-          <div class="player-offline" hidden><span class="eyebrow">SOUNDCLOUD / 6 TRACKS</span><span class="player-symbol" aria-hidden="true">▶</span><strong>Feral Current</strong><span>32:15 · Listening Garden / Eric Souther</span><a href="https://soundcloud.com/eric-souther/sets/feralcurrent">Listen on SoundCloud ↗</a></div>
+        <div class="album-player" data-album-player aria-label="Feral Current album player">
+          <p class="album-player-label">FERAL CURRENT <span>6 TRACKS / 32:15</span></p>
+          <div class="album-now"><span class="now-number" aria-hidden="true">01</span><h3 id="album-track-title">Floor Takes Root</h3></div>
+          <audio class="album-audio" controls preload="none" src="assets/audio/01_Floor_Takes_Root.m4a" aria-label="Feral Current album playback"><a href="assets/audio/01_Floor_Takes_Root.m4a">Open Floor Takes Root</a></audio>
+          <div class="album-controls" hidden>
+            <div class="album-transport">
+              <button class="album-previous" type="button" aria-label="Previous track" disabled>←</button>
+              <button class="album-toggle" type="button" aria-label="Play Floor Takes Root"><span class="play-symbol" aria-hidden="true">▶</span><span class="play-label">Play</span></button>
+              <button class="album-next" type="button" aria-label="Next track">→</button>
+              <button class="album-mute" type="button" aria-label="Mute audio" aria-pressed="false">Sound on</button>
+            </div>
+            <input class="album-seek" type="range" min="0" max="315" step="0.1" value="0" aria-label="Seek within Floor Takes Root" aria-valuetext="0:00 of 5:15" disabled>
+            <div class="album-clock" aria-hidden="true"><span class="album-elapsed">0:00</span><span class="album-duration">5:15</span></div>
+          </div>
+          <p class="album-error" role="alert" hidden></p>
+          <ol class="album-tracks" aria-label="Album tracks">
+            <li><a href="assets/audio/01_Floor_Takes_Root.m4a" data-album-track data-title="Floor Takes Root" data-duration="315" aria-current="true"><span class="track-number" aria-hidden="true">01</span><span class="track-title">Floor Takes Root</span><span class="track-duration">5:15</span></a></li>
+            <li><a href="assets/audio/02_Second_Weather.m4a" data-album-track data-title="Second Weather" data-duration="300"><span class="track-number" aria-hidden="true">02</span><span class="track-title">Second Weather</span><span class="track-duration">5:00</span></a></li>
+            <li><a href="assets/audio/03_Rake_The_Current.m4a" data-album-track data-title="Rake the Current" data-duration="285"><span class="track-number" aria-hidden="true">03</span><span class="track-title">Rake the Current</span><span class="track-duration">4:45</span></a></li>
+            <li><a href="assets/audio/04_Low_Water_Memory.m4a" data-album-track data-title="Low Water Memory" data-duration="345"><span class="track-number" aria-hidden="true">04</span><span class="track-title">Low Water Memory</span><span class="track-duration">5:45</span></a></li>
+            <li><a href="assets/audio/05_Night_Flower_Fracture.m4a" data-album-track data-title="Night Flower Fracture" data-duration="330"><span class="track-number" aria-hidden="true">05</span><span class="track-title">Night Flower Fracture</span><span class="track-duration">5:30</span></a></li>
+            <li><a href="assets/audio/06_Return_Through_The_Thicket.m4a" data-album-track data-title="Return Through the Thicket" data-duration="360"><span class="track-number" aria-hidden="true">06</span><span class="track-title">Return Through the Thicket</span><span class="track-duration">6:00</span></a></li>
+          </ol>
         </div>
-        <p class="player-fallback"><a href="https://soundcloud.com/eric-souther/sets/feralcurrent">Open Feral Current on SoundCloud ↗</a> <span class="meta">/ PLAYER FALLBACK</span></p>
+        <p class="album-external"><a href="https://soundcloud.com/eric-souther/sets/feralcurrent">Listen on SoundCloud ↗</a></p>
       </div>
     </section>
     <div class="essay">
@@ -53,7 +74,7 @@
               <figure class="cast-card"><div class="cast-tile"><span class="cast-role">MOTIF</span><img src="assets/cast/swell.svg" width="640" height="280" alt="Waveform of Iris"><strong>Iris</strong></div><audio controls preload="none" src="assets/cast/swell.mp3" aria-label="Listen to Iris, a Track 1 motif source"><a href="assets/cast/swell.mp3">Open this sound</a></audio></figure>
               <figure class="cast-card"><div class="cast-tile"><span class="cast-role">STEREO GRAINS</span><img src="assets/cast/xerophyte-via-jupiter.svg" width="640" height="280" alt="Waveform of Juniper"><strong>Juniper</strong></div><audio controls preload="none" src="assets/cast/xerophyte-via-jupiter.mp3" aria-label="Listen to Juniper, a Track 1 stereo grain source"><a href="assets/cast/xerophyte-via-jupiter.mp3">Open this sound</a></audio></figure>
             </div>
-            <p class="cast-footnote">These are individual source previews, not isolated album stems. <a href="https://soundcloud.com/eric-souther/sets/feralcurrent">Hear them meet on SoundCloud ↗</a></p>
+            <p class="cast-footnote">These are individual source previews, not isolated album stems. <a href="#listen-heading">Hear them meet in the album ↑</a></p>
           </section>
           <section id="space" aria-labelledby="space-title">
             <span class="section-no">02 / AROUND THE GROOVE</span><h2 id="space-title">A rhythm to hold onto</h2>

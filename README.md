@@ -18,4 +18,4 @@ Editable sketches are separate from recorded arrangement maps. Label drawing-onl
 
 Music, artwork, and texts by Listening Garden. All rights reserved. Historical reproductions credited to other collections retain their stated rights; see the accompanying asset records.
 
-The homepage flower includes two five-second Feral Current excerpts alongside its existing Wild Grafting clips. Playback starts only on a tap; the full Feral Current collection remains on SoundCloud.
+The homepage flower includes two five-second Feral Current excerpts alongside its existing Wild Grafting clips. Playback starts only on a tap; the full Feral Current collection plays directly on its experiment page, with a separate link to SoundCloud. The six release AAC files are preserved without re-encoding and load on demand.
