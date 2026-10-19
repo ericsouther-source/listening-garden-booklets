@@ -14,4 +14,4 @@ The published Wild Grafting companion includes six short paired comparisons and 
 
 Editable sketches are separate from recorded arrangement maps. Label drawing-only controls clearly, and keep the listening companion focused on the sound material and musical relationships.
 
-Music, artwork, and texts by Listening Garden. All rights reserved.
+Music, artwork, and texts by Listening Garden. All rights reserved. Historical reproductions credited to other collections retain their stated rights; see the accompanying asset records.
