@@ -10,7 +10,7 @@
   <link rel="stylesheet" href="../../journal/assets/journal.css">
   <link rel="stylesheet" href="assets/album-player.css?v=20261018">
   <script defer src="assets/album-player.js?v=20261018"></script>
-</head>
+<link rel="stylesheet" href="../../assets/spatial-player/field.css?v=20261022"><script defer src="../../assets/spatial-player/field-math.js?v=20261022"></script><script defer src="../../assets/spatial-player/viewer.js?v=20261022"></script></head>
 <body>
   <a class="skip" href="#article">Skip to the listening experiment</a>
   <header class="topbar wrap">
@@ -62,7 +62,7 @@
     </section>
     <div class="essay">
       <div class="essay-layout wrap">
-        <nav class="essay-side" aria-label="Entry sections"><strong>In this entry</strong><ol><li><a href="#material">01 / The cast</a></li><li><a href="#space">02 / Around the groove</a></li></ol></nav>
+        <nav class="essay-side" aria-label="Entry sections"><strong>In this entry</strong><ol><li><a href="#material">01 / The cast</a></li><li><a href="#space">02 / Around the groove</a></li><li><a href="#feral-field">03 / Inside the field</a></li></ol></nav>
         <article class="essay-copy">
           <p class="approved">Feral Current gathers six months of playing with sound into six tracks, drawing on 809 distinct sounds from a 1,000-sound pool in Listening Garden. This sedimentation of practice takes new form through algorithmic composition with an AI collaborator. I guided the exploration through artistic direction and listening; together we developed rules and scores that the Garden’s audio engine performed. Garden-processed sounds meet in rhythms that dissolve and return, bringing accumulated experiments into unexpected relationships.</p>
           <section id="material" aria-labelledby="material-title">
@@ -84,6 +84,23 @@
         </article>
       </div>
     </div>
+<section id="feral-field" class="wrap spatial-player" data-spatial-player data-motion-url="assets/field/motion-data.json" aria-labelledby="fc-title">
+ <header class="fc-heading"><p class="eyebrow">03 / INSIDE THE FIELD</p><h2 id="fc-title">A place to stand</h2><p>In <em>Floor Takes Root</em>, pulse and bass share a narrow direction. These two passages move from that rhythmic anchor into a field of grains.</p></header>
+ <div class="fc-grid"><figure class="fc-field">
+  <canvas width="600" height="600" tabindex="0" aria-label="Interactive three-dimensional sound field" aria-describedby="fc-help fc-legend fc-field-status">The moving field needs canvas support. The passage descriptions and recording links below remain available.</canvas>
+<div class="fc-playback"> <label for="fc-seek">Position in passage</label><input id="fc-seek" type="range" min="0" max="7.6190417" step=".01" value="0" disabled><div class="fc-transport"><button id="fc-play" type="button" disabled>Play passage</button><button id="fc-restart" type="button" disabled>Restart</button></div><p id="fc-status" role="status" aria-live="polite">Loading passage controls</p>
+ <audio id="fc-audio" preload="none" src="assets/audio/01_Floor_Takes_Root.m4a"><a href="assets/audio/01_Floor_Takes_Root.m4a">Open Floor Takes Root</a></audio>
+ <p><a id="fc-fallback" href="assets/audio/01_Floor_Takes_Root.m4a#t=30.4761875,38.09522916666667">Open this passage directly ↗</a></p><noscript><p><a href="assets/audio/01_Floor_Takes_Root.m4a#t=98,106">Open the second passage directly ↗</a></p></noscript></div>
+  <figcaption><p id="fc-help">Drag to orbit · arrow keys to turn · Home to reset</p><div class="fc-camera" aria-label="Camera controls"><button type="button" data-camera="[-0.2,0]" aria-label="Orbit left">←</button><button type="button" data-camera="[0.2,0]" aria-label="Orbit right">→</button><button type="button" data-camera="[0,0.2]" aria-label="Tilt up">↑</button><button type="button" data-camera="[0,-0.2]" aria-label="Tilt down">↓</button><button type="button" data-camera="[0,0,true]">Reset view</button></div>
+  <p id="fc-legend"><span class="fc-pulse">● Pulse</span><span class="fc-bass">■ Bass</span><span class="fc-motif">● Motif</span><span class="fc-grains">•• Stereo grains</span></p><label class="fc-follow"><input id="fc-follow" type="checkbox"> Follow sound motion</label><p id="fc-field-status">Loading saved directions</p></figcaption>
+ </figure><div class="fc-passages"><p class="eyebrow">TWO LISTENING PASSAGES</p>
+ <button class="fc-passage" data-passage="a" type="button" disabled aria-pressed="true"><span>01 / 0:30.48–0:38.10</span><strong>A floor to return to</strong><span>A regular pulse holds its direction as fragments move around it.</span></button>
+ <button class="fc-passage" data-passage="b" type="button" disabled aria-pressed="false"><span>02 / 1:38–1:46</span><strong>When the floor dissolves</strong><span>The pulse drops out; a forty-pair grain cloud enters at 1:42.53.</span></button>
+
+  <div class="fc-reading"><p>The circle at the front marks the pulse and bass anchor. Filled marks show active score events. Each grain has two points, one for each side of its stereo pair. The four colors identify compositional roles; each role can draw on different sounds.</p><details><summary>Reading the field</summary><p>This is a reconstruction of encoder directions from the saved score and the renderer’s motion curves, synchronized to the existing release recording. The native render used one third-order ambisonic field, decoded for stereo listening.</p><p>Four selected roles are shown. The view does not measure sound energy or where you will perceive a sound; other roles and effect tails are not drawn. A line between a grain’s two points shows its stereo width. The camera changes only the view, not the audio.</p><p>Turn off “Follow sound motion” to hold the view. Seeking still lets you inspect a moment. Motion starts held when your device requests reduced motion.</p></details></div>
+</div></div>
+</section>
+
   </main>
   <footer class="article-footer wrap"><p><a href="../">← All listening experiments</a></p><p>Listening Garden / Eric Souther</p></footer>
 </body>
