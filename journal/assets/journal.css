@@ -21,3 +21,5 @@
 @media(max-width:650px){.topbar{flex-wrap:wrap;gap:5px 14px;padding-block:14px}.topbar nav{gap:5px 17px;margin-left:auto}.topbar nav a{display:inline-flex;align-items:center;min-height:36px}}
 
 @media(max-width:360px){.experiments-hero h1{font-size:45px}}
+
+.art-video{background:radial-gradient(circle at 64% 35%,#69c6af30,transparent 48%),#1c2118;color:var(--teal)}.art-video .art-shape{border-radius:3%;border-color:var(--teal);transform:rotate(-8deg)}.art-video .art-shape-b{border-color:var(--pink);transform:rotate(8deg)}
