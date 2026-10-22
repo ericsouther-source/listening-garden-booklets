@@ -20,7 +20,8 @@
   }
   function go(index, moveFocus = false) {
     const target = Math.max(0, Math.min(slides.length - perPage(), index));
-    if (moveFocus) slides[target].querySelector('a').focus({preventScroll:true});
+    const focusTarget = Math.max(0, Math.min(slides.length - 1, index));
+    if (moveFocus) slides[focusTarget].querySelector('a').focus({preventScroll:true});
     track.scrollTo({left:target * step(), behavior:reducedMotion.matches ? 'instant' : 'smooth'});
     requestAnimationFrame(update);
   }
@@ -30,8 +31,10 @@
   track.addEventListener('keydown', event => {
     if (!['ArrowLeft','ArrowRight','Home','End'].includes(event.key) || event.altKey || event.ctrlKey || event.metaKey) return;
     event.preventDefault();
-    const index = event.key === 'Home' ? 0 : event.key === 'End' ? slides.length : first() + (event.key === 'ArrowRight' ? perPage() : -perPage());
-    go(index, event.target.closest('a') !== null);
+    const focused = slides.findIndex(slide => slide.contains(document.activeElement));
+    const direction = event.key === 'ArrowRight' ? 1 : -1;
+    const index = event.key === 'Home' ? 0 : event.key === 'End' ? slides.length - 1 : focused >= 0 ? focused + direction : first() + direction * perPage();
+    go(index, focused >= 0);
   });
   new ResizeObserver(update).observe(track);
   update();
