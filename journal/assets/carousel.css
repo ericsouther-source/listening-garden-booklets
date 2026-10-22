@@ -1,0 +1,13 @@
+.notes-paging{display:flex;align-items:center;justify-content:space-between;gap:16px;margin:0 0 24px;font:12px/1.5 var(--mono);color:var(--muted)}
+.notes-paging p{margin:0}
+.notes-buttons{display:flex;gap:8px}
+.notes-buttons button{font:12px/1.3 var(--mono);min-height:44px;min-width:44px;padding:10px 15px;border:1px solid var(--line);color:var(--lime);background:transparent;cursor:pointer}
+.notes-buttons button:hover:not(:disabled){border-color:var(--lime)}
+.notes-buttons button:disabled{color:var(--muted);opacity:.45;cursor:default}
+.home-note-grid.notes-track{--cards-per-page:3;--notes-gap:32px;grid-template-columns:none;grid-auto-flow:column;grid-auto-columns:calc((100% - 2 * var(--notes-gap))/3);gap:var(--notes-gap);overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x mandatory;scroll-behavior:smooth;padding:6px 4px 12px;margin:-6px -4px -12px;scrollbar-width:thin;scrollbar-color:var(--line) transparent}
+.note-slide{display:flex;min-width:0;scroll-snap-align:start;scroll-margin-inline:4px}
+.note-slide>.entry-card{flex:1}
+.notes-track:focus-visible{outline:2px solid var(--pink);outline-offset:5px}
+@media(min-width:651px) and (max-width:1000px){.home-note-grid.notes-track{--cards-per-page:2;--notes-gap:30px;grid-auto-columns:calc((100% - var(--notes-gap))/2)}}
+@media(max-width:650px){.home-note-grid.notes-track{--cards-per-page:1;--notes-gap:24px;grid-auto-columns:100%}.notes-paging{gap:10px}.notes-buttons button{padding-inline:12px}}
+@media(prefers-reduced-motion:reduce){.home-note-grid.notes-track{scroll-behavior:auto}}

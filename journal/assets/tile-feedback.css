@@ -1,0 +1,7 @@
+.feedback-tile{background:#1c2118 url("video-feedback.svg") center/cover no-repeat;color:var(--teal)}
+.feedback-tile .art-index{background:#1c2118cc;box-shadow:0 0 8px 4px #1c2118cc}
+.home-note-grid .entry-card{display:flex;flex-direction:column;gap:0}
+.entry-card>div:last-child{display:flex;flex-direction:column;min-width:0;align-self:stretch}
+.home-note-grid .entry-card>div:last-child{flex:1}
+.home-note-grid .entry-art{flex-shrink:0}
+.entry-card .tags{margin-top:auto;padding-top:4px}

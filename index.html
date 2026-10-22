@@ -12,7 +12,7 @@
   <link rel="stylesheet" href="assets/home.css">
   <script src="assets/companion/sounds.js?v=20261018-feral" defer></script>
   <script src="assets/companion/companion.js?v=20261007-breakcore" defer></script>
-</head>
+<link rel="stylesheet" href="journal/assets/tile-feedback.css?v=20261022"><link rel="stylesheet" href="journal/assets/carousel.css?v=20261022"><script defer src="journal/assets/carousel.js?v=20261022"></script></head>
 <body>
   <a class="skip" href="#project">Skip to the project</a>
   <header class="topbar wrap">
@@ -91,9 +91,9 @@
     <section class="home-notes home-notes-visual wrap" id="notes" aria-labelledby="notes-title">
       <div class="notes-intro">
         <div class="section-heading"><p class="eyebrow">02 / READ ABOUT THE PROJECT</p><h2 id="notes-title">Notes from<br><span>the Garden</span></h2></div>
-        <div class="section-copy"><p>The historical and technical life of Listening Garden: ideas, tools, scores, and decisions made by listening.</p><a class="text-action" href="journal/">Explore the notes <span aria-hidden="true">↗</span></a></div>
+        <div class="section-copy"><p>The historical and technical life of Listening Garden: ideas, tools, scores, and decisions made by listening.</p><a class="text-action" href="journal/">Explore all notes <span aria-hidden="true">↗</span></a></div>
       </div>
-      <div class="home-note-grid"><a class="entry-card" href="journal/agency-history/" aria-labelledby="history-title">
+      <div class="notes-paging"><p id="notes-position" role="status" aria-live="polite" aria-atomic="true">1–3 of 3</p><div class="notes-buttons"><button type="button" data-notes-previous aria-label="Previous notes" aria-controls="notes-track">← Previous</button><button type="button" data-notes-next aria-label="Next notes" aria-controls="notes-track">Next →</button></div></div><div class="home-note-grid notes-track" id="notes-track" tabindex="0" role="region" aria-roledescription="carousel" aria-label="Published notes"><div class="note-slide" role="group" aria-roledescription="slide" aria-label="1 of 3"><a class="entry-card" href="journal/agency-history/" aria-labelledby="history-title">
         <div class="entry-art art-history" aria-hidden="true"><span class="art-index">01 / HISTORY</span><span class="art-shape art-shape-a"></span><span class="art-shape art-shape-b"></span><span class="art-caption">WHO<br>DECIDES?</span></div>
         <div>
           <p class="eyebrow">NOTE <span class="pink">/ 01</span></p>
@@ -101,7 +101,7 @@
           <p class="summary">From early musical procedures to chance, computation and AI: a small history of authorship shared across a system.</p>
           <div class="tags" aria-label="Topics"><span class="tag">HISTORY</span><span class="tag">AGENCY</span><span class="tag">SCORES</span></div>
         </div>
-      </a><a class="entry-card" href="journal/future-experiment/" aria-labelledby="future-title">
+      </a></div><div class="note-slide" role="group" aria-roledescription="slide" aria-label="2 of 3"><a class="entry-card" href="journal/future-experiment/" aria-labelledby="future-title">
         <div class="entry-art art-future" aria-hidden="true"><span class="art-index">02 / EXPERIMENT</span><span class="art-rings"></span><span class="art-caption">HEAR<br>AGAIN.</span></div>
         <div>
           <p class="eyebrow">NOTE <span class="pink">/ 02</span></p>
@@ -109,10 +109,10 @@
           <p class="summary">Letting listening and reflection shape the rules of composition.</p>
           <div class="tags" aria-label="Topics"><span class="tag">EXPERIMENT</span><span class="tag">LISTENING</span></div>
         </div>
-      </a><a class="entry-card" href="journal/coming-to-sound-through-video/" aria-labelledby="video-title">
-        <div class="entry-art art-video" aria-hidden="true"><span class="art-index">03 / VIDEO</span><span class="art-shape art-shape-a"></span><span class="art-shape art-shape-b"></span><span class="art-caption">THROUGH<br>VIDEO</span></div>
+      </a></div><div class="note-slide" role="group" aria-roledescription="slide" aria-label="3 of 3"><a class="entry-card" href="journal/coming-to-sound-through-video/" aria-labelledby="video-title">
+        <div class="entry-art art-video feedback-tile" aria-hidden="true"><span class="art-index">03 / VIDEO</span><span class="art-caption">THROUGH<br>VIDEO</span></div>
         <div><p class="eyebrow">NOTE <span class="pink">/ 03</span></p><h3 id="video-title">Coming to sound through video <span class="arrow" aria-hidden="true">↗</span></h3><p class="summary">Making a tool, perceiving its behavior, and keeping the trail of revision.</p><div class="tags" aria-label="Topics"><span class="tag">VIDEO</span><span class="tag">REFLEXIVITY</span></div></div>
-      </a></div>
+      </a></div></div>
     </section>
     <section class="home-collection wrap" id="experiments" aria-labelledby="experiments-title">
       <div class="collection-intro"><div><p class="eyebrow">03 / RECORDINGS FROM THE PROCESS</p><h2 id="experiments-title">Listening experiments</h2></div><p>Studies, trials, and discoveries worth sharing. A place to hear an idea take shape and follow where it might lead.</p></div>
