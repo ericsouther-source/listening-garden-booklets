@@ -1,0 +1,29 @@
+.stutter-field{margin:32px 0;padding:24px 20px;background:#faf8f0;border:1px solid #bbbcb0;color:#201a22;min-width:0}
+.stutter-field [hidden]{display:none!important}
+.stutter-field h3{font-size:clamp(25px,4vw,32px);line-height:1.12;margin:0 0 14px;color:#2e5140}
+.stutter-field figcaption p{font-size:17px;line-height:1.5}
+.stutter-field audio{display:block;width:100%;height:54px;margin:20px 0 10px}
+.stutter-field .sf-note{font:13px/1.6 var(--mono);margin:10px 0 18px;color:#514650;overflow-wrap:anywhere}
+.stutter-field canvas{display:block;width:100%;height:auto;aspect-ratio:6/5;touch-action:pan-y;cursor:grab}
+.stutter-field canvas.wg-dragging{cursor:grabbing}
+.stutter-field .sf-seek{border-top:1px solid #c9c1c3;padding-top:12px}
+.stutter-field .sf-seek label{display:flex;align-items:baseline;justify-content:space-between;gap:12px;font:14px/1.5 var(--mono)}
+.stutter-field output{color:#54218e;font-weight:700}
+.stutter-field input[type="range"]{display:block;width:100%;min-width:0;height:44px;margin:0;accent-color:#54218e}
+.stutter-field fieldset{border:0;padding:0;margin:20px 0 12px;min-width:0}
+.stutter-field legend{padding:0 0 10px;font:700 14px/1.5 var(--mono)}
+.stutter-field #ag-field-roles{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 16px}
+.stutter-field .wg-role{position:relative;display:grid;grid-template-columns:20px 12px minmax(0,1fr);align-items:center;gap:7px;min-height:44px;font:14px/1.4 var(--mono);border-bottom:1px dotted #c9c1c3;cursor:pointer}
+.stutter-field .wg-role input{margin:0;width:20px;height:20px;accent-color:var(--role-ink)}
+.stutter-field .wg-role-dot{width:11px;height:11px;border:2px solid var(--role-ink);border-radius:50%;background:var(--role-ink)}
+.stutter-field .wg-role[data-active="false"] .wg-role-dot{background:#faf8f0}
+.stutter-field .wg-role small{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+.stutter-field .sf-view-controls{display:flex;flex-wrap:wrap;gap:7px;margin:20px 0 12px}
+.stutter-field button{font:14px/1.4 var(--mono);color:#201a22;background:transparent;border:1px solid #514650;border-radius:0;min-width:44px;min-height:44px;padding:10px;cursor:pointer}
+.stutter-field button:hover{background:#201a22;color:#faf8f0}
+.stutter-field .sf-follow{display:flex;align-items:center;gap:10px;min-height:44px;font:14px/1.5 var(--mono)}
+.stutter-field .sf-follow input{width:20px;height:20px;margin:0;accent-color:#54218e}
+.stutter-field :is(button,input,canvas,audio,a):focus-visible{outline:3px solid #007fbd;outline-offset:3px}
+.stutter-field .sf-companion{font-size:15px;margin:24px 0 0;padding-top:16px;border-top:1px solid #c9c1c3}
+@media(max-width:550px){.stutter-field{padding:20px 12px}.stutter-field canvas{aspect-ratio:1/1}.stutter-field #ag-field-roles{gap:0 8px}.stutter-field .wg-role{font-size:12px;gap:5px}.stutter-field .sf-note{font-size:12px}}
+@media print{.stutter-field .sf-interactive,.stutter-field audio{display:none}.stutter-field{break-inside:avoid}}

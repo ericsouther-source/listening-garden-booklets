@@ -9,6 +9,8 @@
   <link rel="icon" href="../../wild-grafting/assets/lg-icon.png" type="image/png">
   <link rel="stylesheet" href="../assets/journal.css">
   <link rel="stylesheet" href="../assets/notes.css">
+  <link rel="stylesheet" href="assets/stutter-field.css">
+  <script defer src="assets/stutter-field.js"></script>
 <meta property="article:published_time" content="2026-10-18T22:39:18-04:00"></head>
 <body>
   <a class="skip" href="#article">Skip to the journal entry</a>
@@ -53,7 +55,25 @@
           </section>
           <section id="garden" aria-labelledby="garden-title">
             <span class="section-no">04 / IN THE GARDEN</span><h2 id="garden-title">Listening can change the next rule</h2>
-            <p>In the Garden, I work with rules, materials and listening as parts of the same process. Artificial Intelligence adds another participant to my own process: it can help propose and revise rules. In <a href="../../experiments/feral-current/"><em>Feral Current</em></a>, I guided the exploration through artistic direction and listening, and the Garden’s audio engine performed the scores we developed. I heard what happened and could change the next request. That loop makes authorship feel less like one command and more like an exchange over time.</p>
+            <p>In the Garden, I work with rules, materials and listening as parts of the same process. Artificial Intelligence adds another participant to my own process: it can help propose and revise rules.</p>
+            <p>In <a href="../../wild-grafting/"><em>Wild Grafting</em></a>, sounds from the Garden take on different roles within generative arrangements: holding a line, setting a pulse, answering a gesture or gathering into texture. Timing and movement through the spatial field give them places to meet, separate and return. I’m interested in how a sound changes the character of a phrase, and how listening to that encounter opens another possibility.</p>
+            <p>Casting means choosing which sounds inhabit the parts of an arrangement. Changing the pool of available sounds lets me hear those relationships take on another character. I think of generative arrangement as a form of signal processing: timing, repetition, layering and spatial movement transform how the material is heard.</p>
+            <figure class="stutter-field" id="agency-field" data-stutter-field data-spatial-src="../../wild-grafting/assets/spatial-data.js" aria-labelledby="ag-field-title">
+              <figcaption><span class="section-no">LISTEN + EXPLORE / WILD GRAFTING</span><h3 id="ag-field-title">Follow a sound through the field</h3><p>In this 16-second passage from <em>Stutter Botany</em>, five voices share a sphere. Follow their paths as they meet, separate and return.</p></figcaption>
+              <audio id="ag-field-audio" controls preload="none" aria-label="Stutter Botany excerpt" src="../../wild-grafting/assets/audio/v5/06_stutter_field.m4a">Your browser cannot play this recording.</audio>
+              <p class="sf-note">1:07.7–1:23.7 · headphones welcome · <a href="../../wild-grafting/assets/audio/v5/06_stutter_field.m4a">Open the excerpt</a></p>
+              <p id="ag-field-audio-error" class="sf-note" role="status" hidden></p>
+              <div class="sf-interactive" hidden>
+                <canvas id="ag-field-canvas" width="840" height="700" tabindex="0" role="img" aria-label="Five sound roles around a sphere. Drag or use arrow keys to turn the view. Home resets it." aria-describedby="ag-field-description"></canvas>
+                <div class="sf-seek"><label for="ag-field-scrub">Find a moment <output id="ag-field-time" aria-live="off">1:07</output></label><input id="ag-field-scrub" type="range" min="0" max="16" step="0.01" value="0" aria-label="Seek within this Stutter Botany excerpt"></div>
+                <p class="sf-note" id="ag-field-description">The sphere maps five voices’ written directions. Filled dots mark notes; open dots mark rests. Turning the view changes the drawing; the audio mix stays the same.</p>
+                <fieldset><legend>Show voices in the drawing</legend><div id="ag-field-roles"></div></fieldset>
+                <div class="sf-view-controls" role="group" aria-label="Turn the sphere"><button type="button" data-field-turn="left" aria-label="Turn view left">←</button><button type="button" data-field-turn="right" aria-label="Turn view right">→</button><button type="button" data-field-turn="up" aria-label="Turn view up">↑</button><button type="button" data-field-turn="down" aria-label="Turn view down">↓</button><button type="button" id="ag-field-reset">Reset view</button></div>
+                <label class="sf-follow"><input type="checkbox" id="ag-field-follow" checked> Follow playback</label><p class="sf-note" id="ag-field-follow-note">Switch this off to hold the drawing while you listen.</p>
+              </div>
+              <noscript><p class="sf-note">The recording is available above. Enable JavaScript to explore the sphere.</p></noscript>
+              <p class="sf-companion"><a href="../../wild-grafting/">Explore the Wild Grafting listening companion →</a></p>
+            </figure>
             <p>These histories make me curious about where I place decisions in the Garden. What do I want to determine, and what do I want to leave open? When something happens that I hadn’t anticipated, I listen for what else it might become. What I hear changes the next rule, the next connection, the next thing I try.</p>
           </section>
           <section class="listen-examples" id="listen-examples" aria-labelledby="listen-examples-title">
